@@ -6,7 +6,7 @@
         </div>
         <div class="user-info">
             <span>Chào,</span>
-            <p><?php echo htmlspecialchars($_SESSION['admin_username']); ?></p>
+            
         </div>
     </div>
 

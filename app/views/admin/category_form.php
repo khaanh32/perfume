@@ -1,14 +1,14 @@
 <?php
-    // --- Logic kiểm tra mode Add hay Edit ---
+    
     if (isset($category_data) && !empty($category_data)) {
-        // Mode EDIT: Lấy dữ liệu
+        
         $page_title = "Sửa Danh mục";
         $form_action = "/web_perfume/category/process_update/" . $category_data['id_category_product'];
         $title_value = $category_data['title_category'];
         $desc_value = $category_data['desc_category_product'];
         $button_text = "Cập nhật";
     } else {
-        // Mode ADD: Dữ liệu rỗng
+        
         $page_title = "Thêm Danh mục mới";
         $form_action = "/web_perfume/category/process_insert";
         $title_value = "";

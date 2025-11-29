@@ -1,216 +1,159 @@
-/* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lato:wght@300;400;700&display=swap');
-
 /* ========================================= */
-/* LOGIN & REGISTER LUXURY STYLE             */
+/* AUTH PAGE STYLE (MINIMALIST SKINCARE)     */
 /* ========================================= */
 
-/* Container chung */
-.login-luxury-container,
-.register-luxury-container {
-    min-height: 100vh;
-    display: flex;
-    background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
-    font-family: 'Lato', sans-serif;
+/* Reset body nền cho trang login để trông sạch sẽ hơn */
+body {
+    background-color: #ffffff; 
 }
 
-/* Phần bên trái (Hình ảnh) */
-.login-luxury-left,
-.register-luxury-left {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    padding: 60px;
-    background-size: cover;
-    background-position: center;
-}
-
-.login-luxury-left {
-    background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
-                      url('https://images.unsplash.com/photo-1541643600914-78b084683601?w=1200');
-}
-
-.register-luxury-left {
-    background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
-                      url('https://images.unsplash.com/photo-1588405748880-12d1d2a59d75?w=1200');
-}
-
-.login-luxury-left h1,
-.register-luxury-left h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 48px;
-    font-weight: 700;
-    margin-bottom: 20px;
-    letter-spacing: 2px;
-}
-
-.login-luxury-left p,
-.register-luxury-left p {
-    font-size: 18px;
-    font-weight: 300;
-    letter-spacing: 1px;
-    max-width: 500px;
-    text-align: center;
-    line-height: 1.8;
-}
-
-/* Phần bên phải (Form) */
-.login-luxury-right,
-.register-luxury-right {
-    flex: 1;
+.auth-container {
+    min-height: 100vh; /* Full màn hình */
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 40px;
-    background: white;
+    padding: 20px;
+    background-color: #fcfcfc; /* Nền trắng xám cực nhẹ */
 }
 
-.login-form-wrapper,
-.register-form-wrapper {
+.auth-wrapper {
     width: 100%;
-    max-width: 450px;
-}
-
-.login-form-header,
-.register-form-header {
+    max-width: 420px; /* Form gọn gàng */
+    background: #ffffff;
+    padding: 50px 40px;
     text-align: center;
-    margin-bottom: 40px;
+    /* Bóng đổ nhẹ nhàng tạo chiều sâu */
+    box-shadow: 0 20px 50px rgba(0,0,0,0.04); 
+    border-radius: 8px;
+    margin-top: 60px; /* Để tránh header nếu header fixed */
 }
 
-.login-form-header h2,
-.register-form-header h2 {
+/* Tiêu đề Form */
+.auth-header { margin-bottom: 40px; }
+.auth-header h2 {
     font-family: 'Playfair Display', serif;
-    font-size: 36px;
+    font-size: 32px;
+    color: #111;
     font-weight: 600;
-    color: #2c2c2c;
     margin-bottom: 10px;
 }
-
-.login-form-header p,
-.register-form-header p {
-    color: #666;
-    font-size: 14px;
-    letter-spacing: 0.5px;
+.auth-header p { 
+    color: #888; 
+    font-family: 'Manrope', sans-serif; 
+    font-size: 14px; 
 }
 
-/* Alerts */
-.alert-message {
-    padding: 12px 20px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+/* Input Fields - Tối giản */
+.form-group-auth { 
+    margin-bottom: 20px; /* Khoảng cách 20px theo yêu cầu */
+    text-align: left;
+    position: relative;
 }
 
-.alert-error {
-    background-color: #fee;
-    color: #c33;
-    border-left: 4px solid #c33;
+.form-group-auth label {
+    display: none; /* Ẩn label theo phong cách tối giản, dùng placeholder */
 }
 
-.alert-success {
-    background-color: #efe;
-    color: #3c3;
-    border-left: 4px solid #3c3;
-}
-
-/* Form Inputs */
-.form-group-luxury {
-    margin-bottom: 25px;
-}
-
-.form-group-luxury label {
-    display: block;
-    margin-bottom: 8px;
-    color: #333;
-    font-weight: 500;
-    font-size: 14px;
-    letter-spacing: 0.5px;
-}
-
-.form-control-luxury {
+.form-control-auth {
     width: 100%;
-    padding: 15px 20px;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    font-size: 15px;
+    padding: 16px 20px;
+    border: 1px solid #ebebeb; /* Viền rất nhạt */
+    border-radius: 6px; /* Bo góc nhẹ mềm mại */
+    font-size: 14px;
+    background-color: #fafafa; /* Nền input xám nhẹ */
     transition: all 0.3s ease;
-    font-family: 'Lato', sans-serif;
+    font-family: 'Manrope', sans-serif;
+    color: #333;
 }
 
-.form-control-luxury:focus {
+.form-control-auth::placeholder {
+    color: #aaa;
+    font-weight: 300;
+}
+
+.form-control-auth:focus {
     outline: none;
-    border-color: #d4a574;
-    box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.1);
+    background-color: #fff;
+    border-color: #000; /* Active màu đen sang trọng */
+    box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
 }
 
-.login-helper-text {
-    font-size: 12px;
-    color: #999;
-    margin-top: 6px;
-    font-style: italic;
+/* Icon mắt password */
+.password-toggle-icon {
+    position: absolute; 
+    right: 15px; 
+    top: 50%; 
+    transform: translateY(-50%);
+    color: #bbb; 
+    cursor: pointer;
+    transition: color 0.3s;
+    font-size: 14px;
 }
+.password-toggle-icon:hover { color: #555; }
 
-/* Buttons */
-.btn-luxury {
+/* Button - To, Rõ, Sang */
+.btn-black {
     width: 100%;
-    padding: 16px;
-    background: linear-gradient(135deg, #d4a574 0%, #c9964a 100%);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
+    padding: 18px;
+    background-color: #000; /* Đen tuyền */
+    color: #fff;
+    border: 1px solid #000;
+    font-size: 14px;
     font-weight: 600;
-    letter-spacing: 1px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
     cursor: pointer;
     transition: all 0.3s ease;
-    text-transform: uppercase;
-    margin-top: 10px;
+    margin-top: 20px;
+    border-radius: 6px; 
 }
 
-.btn-luxury:hover {
+.btn-black:hover {
+    background-color: #333; /* Hover sáng hơn xíu */
+    border-color: #333;
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(212, 165, 116, 0.4);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
 
-/* Footer của form */
-.form-footer {
-    text-align: center;
-    margin-top: 25px;
-    padding-top: 25px;
-    border-top: 1px solid #e0e0e0;
+/* Links */
+.auth-options { 
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 13px; color: #666; margin-bottom: 15px; margin-top: 5px;
 }
 
-.form-footer p {
-    color: #666;
-    font-size: 14px;
+.auth-options input[type="checkbox"] {
+    accent-color: #000; /* Checkbox màu đen */
+    margin-right: 5px;
 }
 
-.form-footer a {
-    color: #d4a574;
-    text-decoration: none;
-    font-weight: 600;
-    transition: color 0.3s ease;
-}
+.forgot-password { color: #888; transition: color 0.3s; }
+.forgot-password:hover { color: #000; }
 
-.form-footer a:hover {
-    color: #c9964a;
+.auth-footer { margin-top: 30px; font-size: 14px; color: #888; }
+.auth-footer a { 
+    font-weight: 600; color: #000; margin-left: 5px; 
+    position: relative;
 }
+.auth-footer a::after {
+    content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1px;
+    background: #000; transition: width 0.3s;
+}
+.auth-footer a:hover::after { width: 100%; }
 
-/* Responsive */
-@media (max-width: 968px) {
-    .login-luxury-left,
-    .register-luxury-left {
-        display: none;
-    }
-    
-    .login-luxury-right,
-    .register-luxury-right {
-        flex: 1;
-    }
+/* Alerts */
+.alert-message { 
+    padding: 12px 15px; 
+    margin-bottom: 20px; 
+    font-size: 13px; 
+    text-align: center; 
+    border-radius: 4px;
+}
+.alert-error { background-color: #fff0f0; color: #d63031; border: 1px solid #ffcccc; }
+.alert-success { background-color: #f0fff4; color: #27ae60; border: 1px solid #ccffdd; }
+
+/* Responsive Mobile */
+@media (max-width: 480px) {
+    .auth-wrapper { padding: 30px 20px; box-shadow: none; background: transparent; }
+    .auth-container { background: #fff; align-items: flex-start; }
+    .auth-header h2 { font-size: 28px; }
 }

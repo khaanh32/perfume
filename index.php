@@ -15,6 +15,7 @@ spl_autoload_register(function($class){
 // Get URL from request
 $url = isset($_GET['url']) ? rtrim($_GET['url'], '/') : 'index';
 $url = explode('/', filter_var($url, FILTER_SANITIZE_URL));
+define('BASE_URL', 'http://localhost/web_perfume');
 
 // Parse URL components
 $controllerName = !empty($url[0]) ? ucfirst(strtolower($url[0])) : 'Index';
@@ -137,4 +138,5 @@ if (file_exists($controllerFile)) {
 </body>
 </html>";
 }
+
 ?>

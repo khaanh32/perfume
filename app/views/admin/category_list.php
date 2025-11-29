@@ -24,9 +24,9 @@
                 </thead>
                 <tbody>
                     <?php
-                    // Kiểm tra xem có dữ liệu không
+                    
                     if (isset($category) && !empty($category)) {
-                        // Lặp qua mảng $category
+                        
                         foreach ($category as $item) {
                     ?>
                         <tr>
@@ -46,14 +46,14 @@
                             </td>
                         </tr>
                     <?php
-                        } // Kết thúc vòng lặp
+                        }
                     } else {
                     ?>
                         <tr>
                             <td colspan="4" style="text-align: center;">Không có danh mục nào.</td>
                         </tr>
                     <?php
-                    } // Kết thúc if
+                    } 
                     ?>
                 </tbody>
             </table>

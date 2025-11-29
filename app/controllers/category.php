@@ -10,9 +10,7 @@ class category extends DController{
         $this->categorymodel = $this->load->model('categorymodel');
     }
 
-    /**
-     * 1. HIỂN THỊ DANH SÁCH (READ)
-     */
+ 
     public function list_category()
     {
         $data['category'] = $this->categorymodel->category($this->table_category_product);
@@ -23,21 +21,17 @@ class category extends DController{
         $this->load->view('admin/footer');
     }
 
-    /**
-     * 2. HIỂN THỊ FORM THÊM MỚI (ADD)
-     */
+   
     public function addcategory()
     {
-        // Chỉ cần tải form, không cần data
+        
         $this->load->view('admin/header');
         $this->load->view('admin/sidebar'); 
-        $this->load->view('admin/category_form'); // Tải form mới
+        $this->load->view('admin/category_form'); 
         $this->load->view('admin/footer');
     }
 
-    /**
-     * 3. HIỂN THỊ FORM SỬA (EDIT)
-     */
+  
     public function editcategory($id)
     {
         $id = intval($id);
@@ -49,10 +43,7 @@ class category extends DController{
         $this->load->view('admin/footer');
     }
         
-    /**
-     * 4. XỬ LÝ THÊM MỚI (INSERT)
-     */
-    public function process_insert()
+        public function process_insert()
     {
         $title = $_POST['title'];
         $desc = $_POST['desc'];
@@ -64,14 +55,12 @@ class category extends DController{
 
         $result = $this->categorymodel->insertcategory($this->table_category_product, $data);
         
-        // Chuyển hướng về trang danh sách
+        
         header("Location: /web_perfume/category/list_category");
         exit();
     }
     
-    /**
-     * 5. XỬ LÝ CẬP NHẬT (UPDATE)
-     */
+    
     public function process_update($id)
     {
         $id = intval($id);
@@ -87,14 +76,12 @@ class category extends DController{
 
         $result = $this->categorymodel->updatecategory($this->table_category_product, $data, $cond);
         
-        // Chuyển hướng về trang danh sách
+        
         header("Location: /web_perfume/category/list_category");
         exit();
     }
 
-    /**
-     * 6. XỬ LÝ XÓA (DELETE)
-     */
+    
     public function deletecategory($id) 
     {
         $id = intval($id);
@@ -105,7 +92,7 @@ class category extends DController{
 
         $cond = "id_category_product = $id";
         
-        // Hàm này giờ đã hoạt động (vì đã sửa ở Bước 1)
+        
         $result = $this->categorymodel->deletecategory($this->table_category_product, $cond);
         
         if ($result) {

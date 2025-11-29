@@ -9,22 +9,14 @@
         parent::__construct($connect,$user,$pass);      
      }
 
-     // SỬA TẠI ĐÂY
      public function select($sql,$data=array(),$fetchStyle=PDO::FETCH_ASSOC){
         $statement = $this->prepare($sql);
         
-        // BỎ VÒNG LẶP FOREACH
-        // foreach($data as $key => $value){
-        //     $statement -> bindParam($key,$value); // <- ĐÂY LÀ LỖI
-        // }
-
-        // THAY BẰNG DÒNG NÀY:
+        
         $statement->execute($data); 
         
-        // Đồng thời truyền $fetchStyle vào fetchAll()
         return $statement->fetchAll($fetchStyle);
      }
-     // KẾT THÚC SỬA
 
      public function insert($table,$data){
         $keys=implode(",",array_keys($data));
@@ -55,7 +47,6 @@
         }
         return $statement->execute();    
      }
-    // ===== THÊM HÀM MỚI NÀY VÀO =====
      public function delete($table, $cond){
         $sql = "DELETE FROM $table WHERE $cond";
         $statement = $this->prepare($sql);

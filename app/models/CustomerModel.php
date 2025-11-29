@@ -4,7 +4,7 @@ class CustomerModel extends DModel {
         $sql = "SELECT * FROM tbl_customer WHERE customer_email = :email AND customer_password = :password";
         $stmt = $this->db->prepare($sql);
         $stmt->execute(['email' => $email, 'password' => $password]);
-        return $stmt->fetch(PDO::FETCH_ASSOC); // Trả về thông tin khách nếu đúng
+        return $stmt->fetch(PDO::FETCH_ASSOC); 
     }
 }
 ?>
