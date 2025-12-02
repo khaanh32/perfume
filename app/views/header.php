@@ -17,6 +17,8 @@
 
     <link rel="stylesheet" href="<?php echo $base_url; ?>/public/css/style.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="<?php echo $base_url; ?>/public/css/login-register-style.css?v=<?php echo time(); ?>">
+
+<link rel="stylesheet" href="<?php echo $base_url; ?>/public/react-dist/auth-style.css?v=<?php echo time(); ?>">
 </head>
 <body>
     <?php
@@ -43,23 +45,22 @@
                     <li><a href="#">Về chúng tôi</a></li>
                     
                     <li class="has-dropdown">
-                        <a href="#">Bộ sưu tập <i class="fas fa-chevron-down"></i></a>
-                        <ul class="dropdown-menu">
-                            <?php 
-                            if(isset($categories) && is_array($categories)){
-                                foreach($categories as $cate){
-                                    ?>
-                                    <li>
-                                        <a href="<?php echo $base_url; ?>/product/category/<?php echo $cate['id_category_product'] ?>">
-                                            <?php echo $cate['title_category'] ?>
-                                        </a>
-                                    </li>
-                                    <?php
-                                }
-                            }
-                            ?>
-                            
-                        </ul>
+<a href="<?php echo $base_url; ?>/product/collection">Bộ sưu tập nước hoa<i class="fas fa-chevron-down"></i></a>                       
+                 <ul class="dropdown-menu">
+    <?php 
+    if(isset($categories) && is_array($categories)){
+        foreach($categories as $cate){
+            ?>
+            <li>
+                <a href="<?php echo $base_url; ?>/product/collection?category=<?php echo $cate['id_category_product'] ?>">
+                    <?php echo $cate['title_category'] ?>
+                </a>
+            </li>
+            <?php
+        }
+    }
+    ?>
+</ul>
                     </li>
 
                     <li class="has-dropdown">
@@ -78,20 +79,41 @@
                     <span class="cart-count">0</span>
                 </a>
 
-                <div class="user-menu-container" style="position: relative; height: 100%; display: flex; align-items: center;">
-                    <?php if (isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in']): ?>
-                        <a href="#" title="Tài khoản"><i class="far fa-user"></i></a>
-                         <div class="dropdown-menu user-dropdown-custom">
-                          <li class="user-name">
-                                <?php echo isset($_SESSION['customer_name']) ? $_SESSION['customer_name'] : 'Khách hàng'; ?>
-                            </li>
-                            <li><a href="<?php echo $base_url; ?>/customer/profile">Hồ sơ cá nhân</a></li>
-                            <li><a href="<?php echo $base_url; ?>/customer/orders"> Đơn hàng</a></li>
-                            <li><a href="<?php echo $base_url; ?>/auth/logout" class="logout-link" style="color: #c0392b !important;">Đăng xuất</a></li>
-                         </div>
-                    <?php else: ?>
-                        <a href="<?php echo $base_url; ?>/auth/login" title="Đăng nhập"><i class="far fa-user"></i></a>
-                    <?php endif; ?>
+        <div class="user-menu-container">
+                <?php if (isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in']): ?>
+                <?php 
+            // Xử lý lấy ảnh avatar
+            // Giả sử bạn đã lưu customer_image vào session khi login, hoặc lấy mặc định
+            $user_name = isset($_SESSION['customer_name']) ? $_SESSION['customer_name'] : 'Bạn';
+            
+            // Logic lấy ảnh: Nếu có trong DB (đã lưu vào session hoặc query lại) thì dùng, không thì dùng ảnh mặc định
+            // Lưu ý: Để tối ưu, tốt nhất lúc Login bạn nên lưu customer_image vào $_SESSION['customer_image']
+            $user_avatar = '/web_perfume/public/images/default-user.png'; // Ảnh mặc định
+            if(isset($_SESSION['customer_image']) && !empty($_SESSION['customer_image'])){
+                $user_avatar = '/web_perfume/public/uploads/avatar/' . $_SESSION['customer_image'];
+            }
+        ?>
+        
+        <div class="header-user-btn" onclick="openProfileModal()">
+            <img src="<?php echo $user_avatar; ?>" alt="Avatar" class="header-user-avatar">
+            <span class="header-user-name"><?php echo htmlspecialchars($user_name); ?></span>
+            
+        </div>
+
+    <?php else: ?>
+        <a href="javascript:void(0);" onclick="openAuthModal('login')" title="Đăng nhập">
+            <i class="far fa-user"></i>
+        </a>
+    <?php endif; ?>
+</div>
+
+<script>
+    function openAuthModal(tabName) {
+        // Tạo Custom Event để báo cho React biết hãy mở Popup
+        const event = new CustomEvent('open-auth-modal', { detail: { tab: tabName } });
+        window.dispatchEvent(event);
+    }
+</script>
                 </div>
             </div>
         </div>

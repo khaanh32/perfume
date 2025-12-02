@@ -1,0 +1,210 @@
+/* =============================================
+   SIDEBAR & NAVIGATION FIXES
+=============================================
+*/
+.sidebar {
+    width: 260px; /* Fixed width */
+    transition: width 0.3s ease;
+    scrollbar-width: thin;
+}
+
+/* Menu Item Styling */
+.sidebar .nav .nav-item {
+    padding: 0 10px;
+}
+
+.sidebar .nav .nav-item .nav-link {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    margin-bottom: 5px;
+}
+
+.sidebar .nav .nav-item .nav-link:hover {
+    background: rgb(72, 17, 192);
+}
+
+/* Sidebar Icon alignment */
+.sidebar .nav .nav-item .nav-link i.menu-icon {
+    width: 20px;
+    margin-right: 15px;
+    text-align: center;
+    font-size: 1.1rem;
+    vertical-align: middle;
+}
+
+/* Title Text Fix */
+.sidebar .nav .nav-item .nav-link .menu-title {
+    display: inline-block;
+    vertical-align: middle;
+    max-width: 160px; /* Prevent text overflow */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Submenu (Dropdown) Fixes */
+.sidebar .nav .nav-item .collapse {
+    transition: all 0.3s ease-in-out;
+}
+
+.sidebar .nav .sub-menu {
+    background: #09389e; /* Darker background for contrast */
+    padding: 10px 0;
+    margin-top: 5px;
+    border-radius: 8px;
+    list-style: none;
+}
+
+.sidebar .nav .sub-menu .nav-item .nav-link {
+    padding-left: 45px !important; /* Indent submenu items */
+    font-size: 0.9rem;
+    color: #aeb2b9;
+}
+
+.sidebar .nav .sub-menu .nav-item .nav-link:hover {
+    color: #ffffff;
+    padding-left: 50px !important; /* Slight movement effect */
+}
+
+.sidebar .nav .sub-menu .nav-item::before {
+    display: none; /* Remove default dots if any */
+}
+
+/* Prevent Sidebar layout break on expand */
+.container-scroller {
+    overflow-x: hidden;
+}
+
+/* =============================================
+   GENERAL UI IMPROVEMENTS
+=============================================
+*/
+.card {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+}
+
+.card-title {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Buttons */
+.btn-primary-custom {
+    background: #4B49AC;
+    border-color: #4B49AC;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn-primary-custom:hover {
+    background: #3f3e91;
+    box-shadow: 0 5px 15px rgba(75, 73, 172, 0.3);
+}
+
+/* Tables */
+.table-modern {
+    width: 100%;
+    margin-bottom: 1rem;
+    vertical-align: top;
+}
+
+.table-modern thead th {
+    background-color: #f5f7ff;
+    border-bottom: 2px solid #e3e3e3;
+    font-weight: 700;
+    color: #333;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    padding: 15px;
+}
+
+.table-modern tbody td {
+    padding: 15px;
+    vertical-align: middle;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.table-modern img.img-thumbnail-custom {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #eee;
+}
+
+/* Search Bar in Lists */
+.search-bar-container {
+    position: relative;
+    max-width: 300px;
+}
+
+.search-bar-container input {
+    padding-left: 35px;
+    border-radius: 20px;
+    border: 1px solid #e3e3e3;
+}
+
+.search-bar-container i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+}
+
+/* Form Styling */
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #343a40;
+}
+
+.form-control {
+    border-radius: 6px;
+    border: 1px solid #dee2e6;
+    padding: 10px 15px;
+    height: auto;
+}
+
+.form-control:focus {
+    border-color: #4B49AC;
+    box-shadow: 0 0 0 0.2rem rgba(75, 73, 172, 0.1);
+}
+
+/* Image Upload Preview */
+.image-preview-container {
+    width: 100%;
+    height: 250px;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    background: #f8f9fa;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.image-preview-container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.image-preview-text {
+    color: #aaa;
+    text-align: center;
+}

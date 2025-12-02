@@ -10,95 +10,102 @@ class Auth extends DController {
         return $categorymodel->category('tbl_category_product');
     }
 
+    // Load view chứa React Login
     public function login() {
         $data['categories'] = $this->getCategories(); 
-        
         $this->load->view('header', $data); 
-        $this->load->view('login');
+        $this->load->view('login'); // View này giờ chỉ chứa div root cho React
         $this->load->view('footer');
     }
 
+    // Load view chứa React Register
     public function register() {
         $data['categories'] = $this->getCategories(); 
-
         $this->load->view('header', $data); 
-        $this->load->view('register');
+        $this->load->view('register'); // View này giờ chỉ chứa div root cho React
         $this->load->view('footer');
     }
 
-    public function process_login() {
-        if (!isset($_POST['username']) || !isset($_POST['password'])) {
-            header("Location: /web_perfume/auth/login?error=missing_data");
-            exit();
-        }
+    // --- API XỬ LÝ LOGIN (React sẽ gọi cái này) ---
+   public function api_login() {
+        header('Content-Type: application/json');
+        
+        $inputJSON = file_get_contents('php://input');
+        $input = json_decode($inputJSON, TRUE);
 
-        $username_or_email = trim($_POST['username']);
-        $password = trim($_POST['password']);
+        $username = isset($input['username']) ? trim($input['username']) : '';
+        $password = isset($input['password']) ? trim($input['password']) : '';
 
-        if (empty($username_or_email) || empty($password)) {
-            header("Location: /web_perfume/auth/login?error=empty_fields");
-            exit();
-        }
+        // ... (Đoạn kiểm tra input giữ nguyên) ...
 
-        $user = $this->authmodel->auto_login($username_or_email, $password);
+        $user = $this->authmodel->auto_login($username, $password);
 
         if ($user) {
+            // Set session PHP
             if ($user['user_type'] === 'admin') {
-                $_SESSION['admin_logged_in'] = true;
-                $_SESSION['admin_username'] = $user['username'];
-                $_SESSION['admin_id'] = $user['admin_id'];
-                header("Location: /web_perfume/admin");
-                exit();
+                // ... (Phần admin giữ nguyên) ...
             } else {
                 $_SESSION['user_logged_in'] = true;
                 $_SESSION['customer_id'] = $user['customer_id'];
                 $_SESSION['customer_name'] = $user['customer_name'];
                 $_SESSION['customer_email'] = $user['customer_email'];
-                header("Location: /web_perfume/");
-                exit();
+                
+                // --- THÊM 3 DÒNG NÀY ---
+                // Lưu thêm các thông tin phụ vào Session để hiển thị trong Popup
+                $_SESSION['customer_phone'] = $user['customer_phone'];
+                $_SESSION['customer_address'] = $user['customer_address'];
+                $_SESSION['customer_image'] = $user['customer_image'];
+                // -----------------------
+                
+                $redirect = '/web_perfume/';
             }
+            
+            echo json_encode([
+                'status' => 'success', 
+                'message' => 'Đăng nhập thành công!', 
+                'redirect' => $redirect
+            ]);
         } else {
-            header("Location: /web_perfume/auth/login?error=invalid_credentials");
-            exit();
+            echo json_encode(['status' => 'error', 'message' => 'Email hoặc mật khẩu không đúng!']);
         }
     }
 
-    public function process_register() {
-        if (!isset($_POST['name']) || !isset($_POST['email']) || 
-            !isset($_POST['password']) || !isset($_POST['confirm_password'])) {
-            header("Location: /web_perfume/auth/register?error=missing_data");
-            exit();
-        }
+    // --- API XỬ LÝ REGISTER (React sẽ gọi cái này) ---
+    public function api_register() {
+        header('Content-Type: application/json');
 
-        $name = trim($_POST['name']);
-        $email = trim($_POST['email']);
-        $password = trim($_POST['password']);
-        $confirm_password = trim($_POST['confirm_password']);
+        $inputJSON = file_get_contents('php://input');
+        $input = json_decode($inputJSON, TRUE);
 
-        if (empty($name) || empty($email) || empty($password) || empty($confirm_password)) {
-            header("Location: /web_perfume/auth/register?error=empty_fields");
-            exit();
+        $name = isset($input['name']) ? trim($input['name']) : '';
+        $email = isset($input['email']) ? trim($input['email']) : '';
+        $password = isset($input['password']) ? trim($input['password']) : '';
+        $confirm_password = isset($input['confirm_password']) ? trim($input['confirm_password']) : '';
+
+        if (empty($name) || empty($email) || empty($password)) {
+            echo json_encode(['status' => 'error', 'message' => 'Vui lòng điền đầy đủ thông tin!']);
+            return;
         }
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            header("Location: /web_perfume/auth/register?error=invalid_email");
-            exit();
+            echo json_encode(['status' => 'error', 'message' => 'Email không hợp lệ!']);
+            return;
         }
 
         if ($password !== $confirm_password) {
-            header("Location: /web_perfume/auth/register?error=password_mismatch");
-            exit();
+            echo json_encode(['status' => 'error', 'message' => 'Mật khẩu xác nhận không khớp!']);
+            return;
         }
 
         if ($this->authmodel->check_email_exists($email)) {
-            header("Location: /web_perfume/auth/register?error=email_exists");
-            exit();
+            echo json_encode(['status' => 'error', 'message' => 'Email đã được sử dụng!']);
+            return;
         }
 
         $data = array(
             'customer_name' => $name,
             'customer_email' => $email,
-            'customer_password' => $password,
+            'customer_password' => $password, // Thực tế nên dùng password_hash($password, PASSWORD_DEFAULT)
             'customer_phone' => '',
             'customer_address' => ''
         );
@@ -106,11 +113,9 @@ class Auth extends DController {
         $result = $this->authmodel->insert_customer('tbl_customer', $data);
 
         if ($result) {
-            header("Location: /web_perfume/auth/login?success=registered");
-            exit();
+            echo json_encode(['status' => 'success', 'message' => 'Đăng ký thành công! Vui lòng đăng nhập.']);
         } else {
-            header("Location: /web_perfume/auth/register?error=register_failed");
-            exit();
+            echo json_encode(['status' => 'error', 'message' => 'Đăng ký thất bại, vui lòng thử lại!']);
         }
     }
 

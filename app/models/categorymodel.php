@@ -79,7 +79,93 @@ public function list_product_index($table_product){
             
     return $this->db->select($sql);
 }
+public function get_random_products($table_product, $limit = 3){
+    // Lấy ngẫu nhiên 3 sản phẩm
+    $sql = "SELECT * FROM $table_product ORDER BY RAND() LIMIT $limit";
+    return $this->db->select($sql);
+}
 
-        
+public function get_filtered_products($filters = [], $limit = 15, $offset = 0) {
+    $sql = "SELECT * FROM tbl_product WHERE 1=1"; 
+    $params = [];
+
+    // --- LOGIC LỌC (Giữ nguyên như cũ) ---
+    if (!empty($filters['category'])) {
+        if (is_array($filters['category'])) {
+            $placeholders = implode(',', array_fill(0, count($filters['category']), '?'));
+            $sql .= " AND id_category_product IN ($placeholders)";
+            $params = array_merge($params, $filters['category']);
+        } else {
+            $sql .= " AND id_category_product = ?";
+            $params[] = $filters['category'];
+        }
     }
-?>
+    if (!empty($filters['gender'])) {
+        $sql .= " AND gender = ?";
+        $params[] = $filters['gender'];
+    }
+    if (!empty($filters['price_range'])) {
+        $range = explode('-', $filters['price_range']);
+        if (count($range) == 2) {
+            $sql .= " AND price_product >= ? AND price_product <= ?";
+            $params[] = (int)$range[0];
+            $params[] = (int)$range[1];
+        } elseif ($range[0] == '3000000+') {
+             $sql .= " AND price_product >= ?";
+             $params[] = 3000000;
+        }
+    }
+    // --- KẾT THÚC LOGIC LỌC ---
+
+    // Sắp xếp
+    $sort = $filters['sort'] ?? 'default';
+    switch ($sort) {
+        case 'price_asc': $sql .= " ORDER BY price_product ASC"; break;
+        case 'price_desc': $sql .= " ORDER BY price_product DESC"; break;
+        case 'newest': $sql .= " ORDER BY id_product DESC"; break;
+        default: $sql .= " ORDER BY id_product DESC"; break;
+    }
+
+    // THÊM: Phân trang
+    $sql .= " LIMIT $limit OFFSET $offset";
+
+    return $this->db->select($sql, $params);
+}
+// đếm số lương sản phẩm để phân trang nếu limit ở controller product = 15 thì 1 trang nó 15 sp sau đó chuyển trang
+// nếu xóa nó thì nó k phân trang nua chỉ lướt từ trên xuống để xem sản phẩm
+public function count_filtered_products($filters = []) {
+    $sql = "SELECT COUNT(*) as total FROM tbl_product WHERE 1=1"; 
+    $params = [];
+
+    // (Copy y hệt logic lọc ở trên để đếm cho chính xác)
+    if (!empty($filters['category'])) {
+        if (is_array($filters['category'])) {
+            $placeholders = implode(',', array_fill(0, count($filters['category']), '?'));
+            $sql .= " AND id_category_product IN ($placeholders)";
+            $params = array_merge($params, $filters['category']);
+        } else {
+            $sql .= " AND id_category_product = ?";
+            $params[] = $filters['category'];
+        }
+    }
+    if (!empty($filters['gender'])) {
+        $sql .= " AND gender = ?";
+        $params[] = $filters['gender'];
+    }
+    if (!empty($filters['price_range'])) {
+        $range = explode('-', $filters['price_range']);
+        if (count($range) == 2) {
+            $sql .= " AND price_product >= ? AND price_product <= ?";
+            $params[] = (int)$range[0];
+            $params[] = (int)$range[1];
+        } elseif ($range[0] == '3000000+') {
+             $sql .= " AND price_product >= ?";
+             $params[] = 3000000;
+        }
+    }
+
+    $result = $this->db->select($sql, $params);
+    return isset($result[0]['total']) ? $result[0]['total'] : 0;
+}
+    }
+?> 

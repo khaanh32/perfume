@@ -14,10 +14,12 @@ class Index extends DController {
         // san pham
         $table_product = 'tbl_product';
         $data['product_home'] = $categorymodel->list_product_index($table_product);
-        
+        // lấy 3 sp ngẫu nhiên , cái này nó nằm ở home  cái sp nổi bật
+        $data['random_products'] = $categorymodel->get_random_products($table_product, 3);
         $this->load->view('header', $data); 
         $this->load->view('home', $data);
         $this->load->view('footer');
     }
+    
 }
 ?>

@@ -234,7 +234,8 @@ public function detail($id) {
              $variants = $categorymodel->getRelatedVariants($title, $current_id);
         }
     }
-
+    // lấy danh mục để hiển thị nó trên header
+$data['categories'] = $categorymodel->category('tbl_category_product');
     // 4. Đóng gói dữ liệu gửi sang View
     $data['product_details'] = $product_details;
     $data['variants'] = $variants; 
@@ -244,7 +245,45 @@ public function detail($id) {
 $this->load->view('detail', $data);
     $this->load->view('footer'); // Footer chung
 }      
-       
+    
+public function collection() {
+    $categorymodel = $this->load->model('categorymodel');
+    
+    // 1. Lấy dữ liệu lọc
+    $filters = [
+        'category'    => $_GET['category'] ?? [],
+        'gender'      => $_GET['gender'] ?? '',
+        'price_range' => $_GET['price'] ?? '',
+        'sort'        => $_GET['sort'] ?? 'default'
+    ];
+
+    // --- PHÂN TRANG LOGIC ---
+    // Số sản phẩm trên 1 trang
+    $limit = 15; 
+    // Lấy trang hiện tại từ URL (ví dụ: ?page=2), mặc định là 1
+    $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    if ($currentPage < 1) $currentPage = 1;
+    
+    // Tính vị trí bắt đầu (OFFSET)
+    $offset = ($currentPage - 1) * $limit;
+
+    // Lấy tổng số sản phẩm để tính tổng số trang
+    $totalProducts = $categorymodel->count_filtered_products($filters);
+    $totalPages = ceil($totalProducts / $limit);
+
+    // 2. Gọi Model lấy sản phẩm (kèm limit và offset)
+    $data['products'] = $categorymodel->get_filtered_products($filters, $limit, $offset);
+    
+    // 3. Truyền biến phân trang sang View
+    $data['categories'] = $categorymodel->category('tbl_category_product');
+    $data['filters'] = $filters;
+    $data['currentPage'] = $currentPage;
+    $data['totalPages'] = $totalPages;
+
+    $this->load->view('header', $data); 
+    $this->load->view('product', $data); 
+    $this->load->view('footer');
+}
 }
 
 
